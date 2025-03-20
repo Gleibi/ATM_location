@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    container_name: backend
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./backend/logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: frontend
+    ports:
+      - "8502:8501"
+    environment:
+      - BACKEND_URL=http://backend:5001
+    depends_on:
+      - backend
